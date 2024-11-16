@@ -79,7 +79,7 @@ public class UserService {
             @ApiResponse(code = 201, message = "Successful", response = User.class),
             @ApiResponse(code = 404, message = "User not found")
     })
-    @Path("/products")
+    @Path("/products/{username}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductsOfUser(@PathParam("username") String username) {
         User u = this.um.getUser(username);
@@ -102,7 +102,7 @@ public class UserService {
             @ApiResponse(code = 201, message = "Successful", response = User.class),
             @ApiResponse(code = 404, message = "User or Product not found")
     })
-    @Path("/addProduct")
+    @Path("/addProduct{username}/{nameProduct}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addProductToUser(@PathParam("username") String username, @PathParam("nameProduct") String nameProduct) {
         User u = this.um.getUser(username);
