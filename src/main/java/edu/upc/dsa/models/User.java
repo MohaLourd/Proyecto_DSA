@@ -7,6 +7,8 @@ import java.util.List;
 public class User {
     String username;
     String password;
+    int dinero = 20;
+
     List<Products> productos;
 
 
@@ -35,6 +37,18 @@ public class User {
     }
 
     public List<Products> getProductos(){return productos; }
+    public void addProducto(Products p){
+        productos.add(p);
+        dinero = dinero - p.getPrice();
+    }
+
+    public int getDinero(){
+        return this.dinero;
+    }
+    public void setDinero(int dinero){
+        this.dinero = dinero;
+    }
+
 
     public void setProductos(List<Products> productos){this.productos = productos; }
 

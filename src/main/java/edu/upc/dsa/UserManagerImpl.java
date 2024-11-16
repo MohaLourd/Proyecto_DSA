@@ -94,7 +94,7 @@ public class UserManagerImpl implements UserManager{
 
     @Override
     public void addProductToUser(User u, Products p) {
-        u.getProductos().add(p);
+        u.addProducto(p);
         logger.info("Producto añadido al usuario " + u.getUsername());
     }
 

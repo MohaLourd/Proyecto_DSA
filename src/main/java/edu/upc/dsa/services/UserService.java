@@ -79,7 +79,7 @@ public class UserService {
             @ApiResponse(code = 201, message = "Successful", response = User.class),
             @ApiResponse(code = 404, message = "User not found")
     })
-    @Path("/products/{username}")
+    @Path("/{username}/products")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductsOfUser(@PathParam("username") String username) {
         User u = this.um.getUser(username);
@@ -99,20 +99,33 @@ public class UserService {
     @POST
     @ApiOperation(value = "add product to user", notes = "asdasd")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response = User.class),
+            @ApiResponse(code = 201, message = "Successful", response = Products.class),
             @ApiResponse(code = 404, message = "User or Product not found")
     })
-    @Path("/addProduct/{username}/{nameProduct}")
+    @Path("/{username}/products/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addProductToUser(@PathParam("username") String username, @PathParam("nameProduct") String nameProduct) {
+    public Response addProductToUser(@PathParam("username") String username, @PathParam("id") int id) {
         User u = this.um.getUser(username);
-        Products p = this.om.getProduct(nameProduct);
+        Products p = this.om.findProduct(id);
 
         if (u == null || p == null) {
             return Response.status(404).build();
         } else {
             this.um.addProductToUser(u, p);
-            return Response.status(201).entity(u).build();
+            return Response.status(201).entity(p).build();
         }
+    }
+
+    @GET
+    @ApiOperation(value = "Get dinero del user", notes = "asdasd")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful" )
+    })
+    @Path("/{username}/dinero")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getDineroUser(@PathParam("username") String username) {
+        User u = this.um.getUser(username);
+        int dinero = u.getDinero();
+        return Response.status(201).entity(dinero).build();
     }
 }

@@ -12,6 +12,7 @@ public interface ProductsManager {
     public List<Products> getProducts();
     public Products getProduct(String name);
 
+    public Products findProduct(int id);
     //futures implementacions
     //public Object getObject(String id);
     //public void deleteObject(String id);

@@ -45,22 +45,22 @@ public class ProductService {
     }
 
     //add product
-    @POST
-    @ApiOperation(value = "add a new Object", notes = "asdasd")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successful", response= Products.class),
-            @ApiResponse(code = 500, message = "invalid data")
-    })
-    @Path("/add")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response addObject(@FormParam("nameProduct") String nameProduct, @FormParam("price") String price) {
-        Products o = new Products(this.om.size()+1,nameProduct, Integer.parseInt(price));
-        if (o.getNameProduct()==" " || o.getPrice()==0){
-            return Response.status(500).entity(o).build();
-        }
-        this.om.addProduct(o);
-        System.out.println("Object added");
-        return Response.status(201).entity(o).build();
-    }
+//    @POST
+//    @ApiOperation(value = "add a new Object", notes = "asdasd")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 201, message = "Successful", response= Products.class),
+//            @ApiResponse(code = 500, message = "invalid data")
+//    })
+//    @Path("/add")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public Response addObject(@FormParam("nameProduct") String nameProduct, @FormParam("price") String price) {
+//        Products o = new Products(this.om.size()+1,nameProduct, Integer.parseInt(price));
+//        if (o.getNameProduct()==" " || o.getPrice()==0){
+//            return Response.status(500).entity(o).build();
+//        }
+//        this.om.addProduct(o);
+//        System.out.println("Object added");
+//        return Response.status(201).entity(o).build();
+//    }
 
 }

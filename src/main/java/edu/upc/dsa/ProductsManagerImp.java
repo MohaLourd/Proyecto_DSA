@@ -67,5 +67,17 @@ public class ProductsManagerImp implements ProductsManager {
         return null;
     }
 
+    @Override
+    public Products findProduct(int id) {
+        for (Products p: this.products) {
+            if (p.getId()==id) {
+                logger.info("Producto con id "+id+"encontrado :" + p.getId()+") "+p.getNameProduct());
+                return p;
+            }
+        }
+        logger.warn("not found "+id);
+        return null;
+    }
+
 
 }
