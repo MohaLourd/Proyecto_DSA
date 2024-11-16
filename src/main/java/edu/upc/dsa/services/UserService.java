@@ -102,7 +102,7 @@ public class UserService {
             @ApiResponse(code = 201, message = "Successful", response = User.class),
             @ApiResponse(code = 404, message = "User or Product not found")
     })
-    @Path("/addProduct{username}/{nameProduct}")
+    @Path("/addProduct/{username}/{nameProduct}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addProductToUser(@PathParam("username") String username, @PathParam("nameProduct") String nameProduct) {
         User u = this.um.getUser(username);
