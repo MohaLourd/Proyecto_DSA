@@ -44,6 +44,22 @@ public class ProductService {
         return Response.status(201).entity(entity).build()  ;
     }
 
+
+    // GET all products
+    @GET
+    @ApiOperation(value = "get all Objects", notes = "asdasd")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response = Products.class, responseContainer = "List"),
+    })
+    @Path("/Android")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getObjectsForAndroid() {
+        List<Products> products = this.om.getProducts();
+        GenericEntity<List<Products>> entity = new GenericEntity<List<Products>>(products) {};
+        return Response.status(201).entity(entity).build();
+    }
+
+
     //add product
 //    @POST
 //    @ApiOperation(value = "add a new Object", notes = "asdasd")

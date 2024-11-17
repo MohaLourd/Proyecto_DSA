@@ -128,4 +128,29 @@ public class UserService {
         int dinero = u.getDinero();
         return Response.status(201).entity(dinero).build();
     }
+    @POST
+    @Path("/login2")
+    @Consumes(MediaType.APPLICATION_JSON)  // Cambiado a JSON
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login2(User user) {  // Ahora recibe un objeto User
+        if (this.um.IniciarSesion(user.getUsername(), user.getPassword()) == 0) {
+            return Response.status(201).entity(user).build();
+        } else {
+            return Response.status(404).entity("User not found or incorrect password").build();
+        }
+    }
+
+    @POST
+    @Path("/register2")
+    @Consumes(MediaType.APPLICATION_JSON)  // Cambiado a JSON
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response register2(User user) {  // Ahora recibe un objeto User
+        if (user.getUsername() == null || user.getPassword() == null) {
+            return Response.status(400).entity("Invalid username or password").build();
+        } else {
+            this.um.Register(user.getUsername(), user.getPassword());
+            return Response.status(201).entity(user).build();
+        }
+    }
+
 }
