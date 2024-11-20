@@ -16,11 +16,11 @@ public class User {
     List<Products> productos;
 
 
-    public User(String username, String password, String email) {
+    public User(String email, String username, String password) {
         this();
+        this.email = email;
         this.username = username;
         this.password = password;
-        this.email=email;
         if (id != null) this.setId(id);
         this.productos = new LinkedList<>();
     }
@@ -30,7 +30,7 @@ public class User {
 
     public String getDatos(){
         return "User [id="+id+", email=" + email + ", username=" + username +
-                ", password="+ password + "]";
+                ", password="+ password + ", dinero=" + dinero + "]";
     }
 
     private void setId(String id) {
@@ -66,7 +66,7 @@ public class User {
         return this.dinero;
     }
     public String getEmail(){
-        return this.email;
+        return email;
     }
     public void setDinero(int dinero){
         this.dinero = dinero;
@@ -75,6 +75,9 @@ public class User {
 
     public void setProductos(List<Products> productos){this.productos = productos; }
 
-
+    public User setEmail(String email) {
+        this.email = email;
+        return this;
+    }
 }
 

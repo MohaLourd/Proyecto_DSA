@@ -29,7 +29,7 @@ public class UserManagerImpl implements UserManager{
 
     @Override
     public User Register(String username, String password, String email) {
-        User u = new User(username,password,email);
+        User u = new User(email, username,password);
         return this.Register(u);
     }
 
@@ -69,11 +69,10 @@ public class UserManagerImpl implements UserManager{
     @Override
     public User IniciarSesion(String user, String password) {
         logger.info("Trying logIn("+user+")");
-        for (int i=0; i<this.users.size(); i++) {
-            User u = this.users.get(i);
+        for (User u : this.users) {
             if ((u.getUsername().equals(user) || u.getEmail().equals(user))
                     && u.getPassword().equals(password)) {
-                logger.info("logIn("+user+") succesful: " + u.getDatos());
+                logger.info("logIn(" + user + ") succesful: " + u.getDatos());
                 return u; //success
             }
         }
@@ -101,10 +100,9 @@ public class UserManagerImpl implements UserManager{
 
     @Override
     public User getUser(String id) {
-        for (int i=0; i<this.users.size(); i++) {
-            User u = this.users.get(i);
+        for (User u : this.users) {
             if (u.getId().equals(id)) {
-                logger.info("getUser("+id+"): "+u.getDatos());
+                logger.info("getUser(" + id + "): " + u.getUsername());
                 return u;
             }
         }

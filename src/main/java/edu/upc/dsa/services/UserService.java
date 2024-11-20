@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import javax.naming.InitialContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
@@ -67,10 +68,10 @@ public class UserService {
     public Response register(@FormParam("username") String username,
                              @FormParam("password") String password,
                              @FormParam("email") String email) {
-        if (username == null || password == null) return Response.status(404).build();
+        if (email == null || username == null || password == null)
+            return Response.status(404).build();
         else{
-            this.um.Register(username, password, email);
-            User u = new User(username, password, email);
+            User u = um.Register(username, password, email);
             return Response.status(201).entity(u).build();
         }
     }
@@ -137,8 +138,9 @@ public class UserService {
     @Consumes(MediaType.APPLICATION_JSON)  // Cambiado a JSON
     @Produces(MediaType.APPLICATION_JSON)
     public Response login2(User user) {  // Ahora recibe un objeto User
-        if (this.um.IniciarSesion(user.getUsername(), user.getPassword()) != null) {
-            return Response.status(201).entity(user).build();
+        User u = um.IniciarSesion(user.getUsername(), user.getPassword());
+        if (u != null) {
+            return Response.status(201).entity(u).build();
         } else {
             return Response.status(404).entity("User not found or incorrect password").build();
         }
@@ -149,11 +151,11 @@ public class UserService {
     @Consumes(MediaType.APPLICATION_JSON)  // Cambiado a JSON
     @Produces(MediaType.APPLICATION_JSON)
     public Response register2(User user) {  // Ahora recibe un objeto User
-        if (user.getUsername() == null || user.getPassword() == null) {
-            return Response.status(400).entity("Invalid username or password").build();
+        if (user.getEmail() == null|| user.getUsername() == null || user.getPassword() == null) {
+            return Response.status(400).entity("Invalid email, username or password").build();
         } else {
-            this.um.Register(user.getUsername(), user.getPassword(), user.getEmail());
-            return Response.status(201).entity(user).build();
+            User u = um.Register(user.getUsername(), user.getPassword(), user.getEmail());
+            return Response.status(201).entity(u).build();
         }
     }
 
