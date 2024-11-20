@@ -51,7 +51,7 @@ public class ProductsManagerImp implements ProductsManager {
     @Override
     public int size() {
         int ret = this.products.size();
-        logger.info("size " + ret);
+        logger.info("size productos " + ret);
         return ret;
     }
 
@@ -59,7 +59,7 @@ public class ProductsManagerImp implements ProductsManager {
     public Products getProduct(String name) {
         for (Products p: this.products) {
             if (p.getNameProduct().equals(name)) {
-                logger.info("getProduct("+name+"): "+ p);
+                logger.info("getProduct("+name+"): "+ p.getDatos());
                 return p;
             }
         }
@@ -71,7 +71,7 @@ public class ProductsManagerImp implements ProductsManager {
     public Products findProduct(int id) {
         for (Products p: this.products) {
             if (p.getId()==id) {
-                logger.info("Producto con id "+id+"encontrado :" + p.getId()+") "+p.getNameProduct());
+                logger.info("Producto con id "+id+" encontrado: " + p.getDatos());
                 return p;
             }
         }

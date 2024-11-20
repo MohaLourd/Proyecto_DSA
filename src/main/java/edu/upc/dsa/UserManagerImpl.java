@@ -22,15 +22,15 @@ public class UserManagerImpl implements UserManager{
 
     @Override
     public User Register(User u) {
-        logger.info("new User added: " + u.getUsername());
         this.users.add(u);
+        logger.info("new User added: " + u.getDatos());
         return u;
     }
 
     @Override
-    public User Register(String username, String password) {
-        logger.info("new User added: " + username);
-        return this.Register(new User(username, password));
+    public User Register(String username, String password, String email) {
+        User u = new User(username,password,email);
+        return this.Register(u);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class UserManagerImpl implements UserManager{
         for (int i=0; i<this.users.size(); i++) {
             if (this.users.get(i).getUsername().equals(u.getUsername())) {
                 this.users.set(i, u);
-                logger.info("updateUser("+u+"): "+this.users.get(i));
+                logger.info("updateUser("+u.getUsername()+"): "+u.getDatos());
                 return u;
             }
         }
@@ -57,7 +57,7 @@ public class UserManagerImpl implements UserManager{
         for (int i=0; i<this.users.size(); i++) {
             User u = this.users.get(i);
             if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
-                logger.info("deleteUser("+username+"): "+u);
+                logger.info("deleteUser("+username+"): "+u.getDatos());
                 this.users.remove(i);
                 return u;
             }
@@ -67,17 +67,18 @@ public class UserManagerImpl implements UserManager{
     }
 
     @Override
-    public int IniciarSesion(String username, String password) {
-        logger.info("Trying logIn("+username+")");
+    public User IniciarSesion(String user, String password) {
+        logger.info("Trying logIn("+user+")");
         for (int i=0; i<this.users.size(); i++) {
             User u = this.users.get(i);
-            if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
-                logger.info("logIn("+username+") succesful: ");
-                return 0; //success
+            if ((u.getUsername().equals(user) || u.getEmail().equals(user))
+                    && u.getPassword().equals(password)) {
+                logger.info("logIn("+user+") succesful: " + u.getDatos());
+                return u; //success
             }
         }
-        logger.warn("not found "+username);
-        return -1; //user not found
+        logger.warn("not found "+user);
+        return null; //user not found
     }
 
     @Override
@@ -95,19 +96,19 @@ public class UserManagerImpl implements UserManager{
     @Override
     public void addProductToUser(User u, Products p) {
         u.addProducto(p);
-        logger.info("Producto añadido al usuario " + u.getUsername());
+        logger.info("Producto añadido al usuario " + u.getDatos());
     }
 
     @Override
-    public User getUser(String username) {
+    public User getUser(String id) {
         for (int i=0; i<this.users.size(); i++) {
             User u = this.users.get(i);
-            if (u.getUsername().equals(username)) {
-                logger.info("getUser("+username+"): "+u);
+            if (u.getId().equals(id)) {
+                logger.info("getUser("+id+"): "+u.getDatos());
                 return u;
             }
         }
-        logger.warn("not found "+username);
+        logger.warn("not found "+id);
         return null;
     }
 

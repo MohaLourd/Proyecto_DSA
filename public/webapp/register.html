@@ -58,14 +58,17 @@
 </head>
 <body>
 <a href="index.html" class="top-left">
-    <img src="imagenes/Flecha.jpg" alt="Logo"  width="50" height="50">
+    <img src="imagenes/Flecha.jpg" alt="Logo" width="50" height="50">
 </a>
 <div class="container">
     <h1>Register</h1>
-    <p>Introduce tu nombre de Usuario y Contraseña</p>
+    <p>Introduce tu Correo y tu nombre de Usuario</p>
     <form id="registerForm">
+        <input type="text" id="email" name="email" placeholder="Correo electrónico" required>
         <input type="text" id="username" name="username" placeholder="Usuario" required>
+        <p>Introduce tu Contraseña</p>
         <input type="password" id="password" name="password" placeholder="Contraseña" required>
+        <input type="password" id="pwd2" name="pwd2" placeholder="Repita la Contraseña" required>
         <button type="submit" id="registerButton">Registrarse</button>
     </form>
     <div id="message" class="message"></div>
@@ -74,32 +77,36 @@
     document.getElementById('registerForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
-        const formData = new FormData(document.getElementById('registerForm'));
-
-        fetch('http://localhost:8080/dsaApp/users/register', {
-            method: 'POST',
-            body: new URLSearchParams(formData)
-        })
-        .then(response => {
-            if (response.status === 201) {
-                return response.json();
-            } else {
-                throw new Error('Registration failed');
-            }
-        })
-        .then(data => {
-            document.getElementById('message').textContent = 'Registration successful';
-            document.getElementById('message').classList.add('success');
-            console.log('Success:', data);
-            if (document.getElementById('message').textContent === 'Registration successful') {
-                window.location.href = 'index.html';
-            }
-        })
-        .catch((error) => {
-            document.getElementById('message').textContent = error.message;
-            document.getElementById('message').classList.add('error');
-            console.error('Error:', error);
-        });
+        if(document.getElementById('pwd2').value === document.getElementById('password').value) {
+            const formData = new FormData(document.getElementById('registerForm'));
+            fetch('http://localhost:8080/dsaApp/users/register', {
+                method: 'POST',
+                body: new URLSearchParams(formData)
+            })
+                .then(response => {
+                    if (response.status === 201) {
+                        return response.json();
+                    } else {
+                        throw new Error('Registration failed');
+                    }
+                })
+                .then(data => {
+                    document.getElementById('message').textContent = 'Registration successful';
+                    document.getElementById('message').classList.add('success');
+                    console.log('Success:', data);
+                    if (document.getElementById('message').textContent === 'Registration successful') {
+                        window.location.href = 'index.html';
+                    }
+                })
+                .catch((error) => {
+                    document.getElementById('message').textContent = error.message;
+                    document.getElementById('message').classList.add('error');
+                    console.error('Error:', error);
+                });
+        }
+        else{
+            document.getElementById('message').textContent = "Revisa que tu contraseña sea igual";
+        }
     });
 </script>
 </body>

@@ -53,13 +53,13 @@
 </head>
 <body>
 <a href="index.html" class="top-left">
-    <img src="imagenes/Flecha.jpg" alt="Logo"  width="50" height="50">
+    <img src="imagenes/Flecha.jpg" alt="Logo" width="50" height="50">
 </a>
 <div class="container">
     <h1>Login</h1>
     <p>Introduce tu nombre de Usuario y Contraseña</p>
     <form id="loginForm">
-        <input type="text" id="username" name="username" placeholder="Usuario" required>
+        <input type="text" id="user" name="user" placeholder="Email o Usuario" required>
         <input type="password" id="password" name="password" placeholder="Contraseña" required>
         <button type="submit" id="loginbutton">Log in</button>
     </form>
@@ -70,7 +70,7 @@
         e.preventDefault();
 
         const formData = new FormData(document.getElementById('loginForm'));
-        const username = formData.get('username');
+        const user = formData.get('user');
 
         fetch('http://localhost:8080/dsaApp/users/login', {
             method: 'POST',
@@ -87,7 +87,8 @@
              console.log('Data received:', data);
             document.getElementById('message').textContent = 'Login successful';
             console.log('Success:', data);
-            localStorage.setItem('username', username);
+            localStorage.setItem('username', data.username);
+            localStorage.setItem('id', data.id);
             if (document.getElementById('message').textContent === 'Login successful') {
                 window.location.href = 'Productos.html';
             }

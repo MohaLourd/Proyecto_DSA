@@ -1,10 +1,14 @@
 package edu.upc.dsa.models;
 
 import edu.upc.dsa.models.Products;
+import edu.upc.dsa.util.RandomUtils;
+
 import java.util.LinkedList;
 import java.util.List;
 
 public class User {
+    String id;
+    String email;
     String username;
     String password;
     int dinero = 20;
@@ -12,14 +16,30 @@ public class User {
     List<Products> productos;
 
 
-    public User(String username, String password) {
+    public User(String username, String password, String email) {
+        this();
         this.username = username;
         this.password = password;
+        this.email=email;
+        if (id != null) this.setId(id);
         this.productos = new LinkedList<>();
     }
     public User() {
+        this.setId(RandomUtils.getId());
     }
 
+    public String getDatos(){
+        return "User [id="+id+", email=" + email + ", username=" + username +
+                ", password="+ password + "]";
+    }
+
+    private void setId(String id) {
+        this.id=id;
+    }
+
+    public String getId(){
+        return id;
+    }
     public String getUsername() {
         return username;
     }
@@ -44,6 +64,9 @@ public class User {
 
     public int getDinero(){
         return this.dinero;
+    }
+    public String getEmail(){
+        return this.email;
     }
     public void setDinero(int dinero){
         this.dinero = dinero;

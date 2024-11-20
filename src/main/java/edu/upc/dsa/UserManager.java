@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface UserManager {
 
-    public User Register(String username, String password);
+    public User Register(String username, String password, String email);
     public User Register(User u);
 
     public List<User> findAll();
-    public int IniciarSesion(String username, String password);
+    public User IniciarSesion(String username, String password);
     public User updateUser(User u);
     public User deleteUser(String username, String password);
     public List<Products> getProductsOfUser(User u);

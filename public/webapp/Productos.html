@@ -14,12 +14,13 @@
             $("#compradosList").hide();
             $("#compradosHeader").hide();
             const user = localStorage.getItem('username');
+            const id = localStorage.getItem('id');
             let dinero;
 
             if (user) {
                 $("#usernameDisplay").append(user);
                 $.ajax({
-                    url: 'http://localhost:8080/dsaApp/users/'+user+'/dinero',
+                    url: 'http://localhost:8080/dsaApp/users/'+id+'/dinero',
                     type: 'GET',
                     success: function (response) {
                         console.log("Dinero:", response);
@@ -48,7 +49,7 @@
                         $('#message').text("Error: ",error.message);
                     });
 
-                $.getJSON('http://localhost:8080/dsaApp/users/'+user+'/products')
+                $.getJSON('http://localhost:8080/dsaApp/users/'+id+'/products')
                     .done(function (data) {
                         $("#compradosList").show();
                         $("#compradosHeader").show();
@@ -68,7 +69,7 @@
 
                 if(dinero>=precio && dinero>0) {
                     $.ajax({
-                        url: 'http://localhost:8080/dsaApp/users/' + user + '/products/' + productId,
+                        url: 'http://localhost:8080/dsaApp/users/' + id + '/products/' + productId,
                         method: 'POST',
                         contentType: 'application/json'
                     })
@@ -80,7 +81,7 @@
                             $('#message').text('¡Producto añadido con éxito!');
 
                             $.ajax({
-                                url: 'http://localhost:8080/dsaApp/users/'+user+'/dinero',
+                                url: 'http://localhost:8080/dsaApp/users/'+id+'/dinero',
                                 type: 'GET',
                                 success: function (response) {
                                     console.log("Dinero:", response);

@@ -15,6 +15,10 @@ public class Products {
     public Products() {
     }
 
+    public String getDatos(){
+        return "Product [id="+id+", name=" + nameProduct + ", price=" + price + "]";
+    }
+
     public int getId() {
         return id;
     }
