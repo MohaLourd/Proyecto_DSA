@@ -1,6 +1,8 @@
 package edu.upc.dsa.services;
 
 
+import edu.upc.dsa.DB.FactorySession;
+import edu.upc.dsa.DB.Session;
 import edu.upc.dsa.ProductsManagerImp;
 import edu.upc.dsa.ProductsManager;
 import edu.upc.dsa.UserManager;
@@ -18,6 +20,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Api(value = "/users", description = "Endpoint to User Service")
@@ -30,11 +33,11 @@ public class UserService {
         this.um = UserManagerImpl.getInstance();
         this.om = ProductsManagerImp.getInstance();
 
-        if (um.size() == 0) {
-            this.um.Register("Dennis", "1234", "dennis@gmail.com");
-            this.um.Register("Bob", "1", "bob@gmail.com");
-            this.um.Register("Manolo", "miau", "manolo@gmail.com");
-        }
+//        if (um.size() == 0) {
+//            this.um.Register("Dennis", "1234", "dennis@gmail.com");
+//            this.um.Register("Bob", "1", "bob@gmail.com");
+//            this.um.Register("Manolo", "miau", "manolo@gmail.com");
+//        }
 
     }
 
@@ -49,6 +52,8 @@ public class UserService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@FormParam("user") String user,
                           @FormParam("password") String password){
+
+
         User u = this.um.IniciarSesion(user, password);
         if (u != null)
             return Response.status(201).entity(u).build();
@@ -99,12 +104,12 @@ public class UserService {
         }
     }
 
-    //add product to user
     @POST
     @ApiOperation(value = "add product to user", notes = "asdasd")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful", response = Products.class),
-            @ApiResponse(code = 404, message = "User or Product not found")
+            @ApiResponse(code = 404, message = "User or Product not found"),
+            @ApiResponse(code = 400, message = "Insufficient funds")
     })
     @Path("/{idUser}/products/{idProduct}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -115,6 +120,8 @@ public class UserService {
 
         if (u == null || p == null) {
             return Response.status(404).build();
+        } else if (u.getDinero() < p.getPrice()) {
+            return Response.status(400).entity("Insufficient funds").build();
         } else {
             this.um.addProductToUser(u, p);
             return Response.status(201).entity(p).build();
@@ -130,15 +137,18 @@ public class UserService {
     @Produces(MediaType.TEXT_PLAIN)
     public Response getDineroUser(@PathParam("id") String id) {
         User u = this.um.getUser(id);
+
+
         int dinero = u.getDinero();
         return Response.status(201).entity(dinero).build();
     }
+
     @POST
     @Path("/login2")
-    @Consumes(MediaType.APPLICATION_JSON)  // Cambiado a JSON
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login2(User user) {  // Ahora recibe un objeto User
-        User u = um.IniciarSesion(user.getUsername(), user.getPassword());
+    public Response login2(User user) {
+        User u = this.um.IniciarSesion(user.getUsername(), user.getPassword());
         if (u != null) {
             return Response.status(201).entity(u).build();
         } else {
@@ -148,13 +158,13 @@ public class UserService {
 
     @POST
     @Path("/register2")
-    @Consumes(MediaType.APPLICATION_JSON)  // Cambiado a JSON
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response register2(User user) {  // Ahora recibe un objeto User
-        if (user.getEmail() == null|| user.getUsername() == null || user.getPassword() == null) {
+    public Response register2(User user) {
+        if (user.getEmail() == null || user.getUsername() == null || user.getPassword() == null) {
             return Response.status(400).entity("Invalid email, username or password").build();
         } else {
-            User u = um.Register(user.getUsername(), user.getPassword(), user.getEmail());
+            User u = this.um.Register(user);
             return Response.status(201).entity(u).build();
         }
     }

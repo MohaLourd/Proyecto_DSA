@@ -24,9 +24,9 @@ public class ProductService {
         this.om = ProductsManagerImp.getInstance();
 
         if (om.size() == 0) {
-                this.om.addProduct("CocaCola", "1");
-                this.om.addProduct("Pepsi", "2");
-                this.om.addProduct("Fanta", "3");
+                //this.om.addProduct("coco", "6");
+                //this.om.addProduct("Pepsi", "2");
+                //this.om.addProduct("Fanta", "3");
             }
         }
 

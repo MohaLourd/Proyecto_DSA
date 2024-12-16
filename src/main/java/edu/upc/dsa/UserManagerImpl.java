@@ -1,8 +1,14 @@
 package edu.upc.dsa;
 
+import edu.upc.dsa.DB.FactorySession;
+import edu.upc.dsa.DB.Session;
+import edu.upc.dsa.DB.UserDAO;
+import edu.upc.dsa.DB.UserDAOImpl;
 import edu.upc.dsa.models.Products;
+import edu.upc.dsa.models.Relacion;
 import edu.upc.dsa.models.User;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -22,15 +28,40 @@ public class UserManagerImpl implements UserManager{
 
     @Override
     public User Register(User u) {
-        this.users.add(u);
-        logger.info("new User added: " + u.getDatos());
+        Session session = FactorySession.openSession();
+        try {
+            session.save(u);
+            logger.info("new User added: " + u.getDatos());
+        }
+        catch (Exception e) {
+            logger.error("Error al añadir el usuario " + u.getDatos());
+            e.printStackTrace();
+
+        }
+        finally {
+            session.close();
+        }
+
         return u;
     }
 
     @Override
     public User Register(String username, String password, String email) {
         User u = new User(email, username,password);
-        return this.Register(u);
+        Session session = FactorySession.openSession();
+        try {
+            session.save(u);
+            logger.info("new User added: " + u.getDatos());
+        }
+        catch (Exception e) {
+            logger.error("Error al añadir el usuario " + u.getDatos());
+            e.printStackTrace();
+
+        }
+        finally {
+            session.close();
+        }
+        return u;
     }
 
     @Override
@@ -68,16 +99,29 @@ public class UserManagerImpl implements UserManager{
 
     @Override
     public User IniciarSesion(String user, String password) {
-        logger.info("Trying logIn("+user+")");
-        for (User u : this.users) {
-            if ((u.getUsername().equals(user) || u.getEmail().equals(user))
-                    && u.getPassword().equals(password)) {
-                logger.info("logIn(" + user + ") succesful: " + u.getDatos());
-                return u; //success
+
+        Session session = FactorySession.openSession();
+        HashMap<String, String> key = new HashMap<>();
+        key.put("username", user);
+        key.put("password", password);
+        try {
+            User u = (User) session.getGeneralisimo(User.class, key);
+            if (u != null) {
+                logger.info("LogIn succesful de user " + user);
+                return u;
+            }
+            else {
+                logger.warn("LogIn fail con user " + user);
             }
         }
-        logger.warn("not found "+user);
-        return null; //user not found
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+        return null;
     }
 
     @Override
@@ -87,26 +131,42 @@ public class UserManagerImpl implements UserManager{
         return ret;
     }
 
+
     @Override
     public List<Products> getProductsOfUser(User u) {
-        return u.getProductos();
+        UserDAO userDAO = new UserDAOImpl();
+        return userDAO.getProductsOfUser(u);
     }
+
 
     @Override
     public void addProductToUser(User u, Products p) {
-        u.addProducto(p);
-        logger.info("Producto añadido al usuario " + u.getDatos());
+        UserDAO userDAO = new UserDAOImpl();
+        userDAO.addProductToUser(u,p);
     }
 
     @Override
     public User getUser(String id) {
-        for (User u : this.users) {
-            if (u.getId().equals(id)) {
-                logger.info("getUser(" + id + "): " + u.getUsername());
+        Session session = FactorySession.openSession();
+        try {
+            HashMap<String, String> key = new HashMap<>();
+            key.put("id", id);
+            User u = (User) session.getGeneralisimo(User.class, key);
+            if (u != null) {
+                logger.info("Usuario encontrado con id " + id);
                 return u;
             }
+            else {
+                logger.warn("Usuario no encontrado con id " + id);
+            }
         }
-        logger.warn("not found "+id);
+        catch (Exception e) {
+            logger.error("Error al obtener el usuario con id " + id);
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
         return null;
     }
 

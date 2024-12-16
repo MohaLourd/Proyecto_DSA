@@ -1,9 +1,9 @@
 package edu.upc.dsa.models;
 
 public class Products {
-    int id;
+    Integer id;
     String nameProduct;
-    int price;
+    Integer price;
 
     public Products(int id, String nameProduct, int price) {
         this();
@@ -19,11 +19,11 @@ public class Products {
         return "Product [id="+id+", name=" + nameProduct + ", price=" + price + "]";
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -35,11 +35,11 @@ public class Products {
         this.nameProduct = nameProduct;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 }

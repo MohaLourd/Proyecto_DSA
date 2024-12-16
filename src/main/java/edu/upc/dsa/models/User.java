@@ -11,9 +11,9 @@ public class User {
     String email;
     String username;
     String password;
-    int dinero = 20;
-
-    List<Products> productos;
+    Integer dinero = 20;
+//    Integer product_id=null;
+//List<Products> productos;
 
 
     public User(String email, String username, String password) {
@@ -22,7 +22,7 @@ public class User {
         this.username = username;
         this.password = password;
         if (id != null) this.setId(id);
-        this.productos = new LinkedList<>();
+        //this.productos = new LinkedList<>();
     }
     public User() {
         this.setId(RandomUtils.getId());
@@ -33,7 +33,7 @@ public class User {
                 ", password="+ password + ", dinero=" + dinero + "]";
     }
 
-    private void setId(String id) {
+    public void setId(String id) {
         this.id=id;
     }
 
@@ -56,28 +56,29 @@ public class User {
         this.password = password;
     }
 
-    public List<Products> getProductos(){return productos; }
-    public void addProducto(Products p){
-        productos.add(p);
-        dinero = dinero - p.getPrice();
-    }
+ //   public List<Products> getProductos(){return productos; }
+//    public void addProducto(Products p){
+//        productos.add(p);
+//        dinero = dinero - p.getPrice();
+//    }
 
-    public int getDinero(){
+    public Integer getDinero(){
         return this.dinero;
     }
     public String getEmail(){
         return email;
     }
-    public void setDinero(int dinero){
+    public void setDinero(Integer dinero){
         this.dinero = dinero;
     }
 
 
-    public void setProductos(List<Products> productos){this.productos = productos; }
+   // public void setProductos(List<Products> productos){this.productos = productos; }
 
     public User setEmail(String email) {
         this.email = email;
         return this;
     }
+
 }
 
