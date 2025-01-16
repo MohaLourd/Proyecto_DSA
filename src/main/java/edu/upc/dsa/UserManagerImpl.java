@@ -195,11 +195,10 @@ public class UserManagerImpl implements UserManager{
             ranking = session.findAll(User.class, key);
             ranking.sort((u1, u2) -> Integer.compare(u2.getPuntos(), u1.getPuntos()));
             for (User user : ranking) {
-                user.setEmail(null);
-                user.setPassword(null);
-                user.setDinero(0);
-                user.setActSkinWeapon(null);
-                user.setActSkinUser(null);
+                user.setEmail("");
+                user.setPassword("");
+                user.setActSkinWeapon("");
+                user.setActSkinUser("");
  //               user.setId(null);
                 // Set other fields to null or 0 as needed
             }
