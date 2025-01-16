@@ -83,6 +83,21 @@ public class UserManagerImpl implements UserManager{
     }
 
     @Override
+    public User updateUserWithId (User u) {
+        Session session = FactorySession.openSession();
+        try {
+            session.update(u);
+            logger.info("User updated: " + u.getDatos());
+        } catch (Exception e) {
+            logger.error("Error al actualizar el usuario " + u.getDatos());
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+        return u;
+    }
+    @Override
     public User deleteUser(String username, String password) {
         logger.info("Trying deleteUser("+username+")");
         for (int i=0; i<this.users.size(); i++) {
@@ -168,6 +183,34 @@ public class UserManagerImpl implements UserManager{
             session.close();
         }
         return null;
+    }
+
+    @Override
+    public List<User> getRanking() {
+        Session session = FactorySession.openSession();
+        List<User> ranking = new LinkedList<>();
+        HashMap<String, Integer> key = new HashMap<>();
+        key.put("1", 1);
+        try {
+            ranking = session.findAll(User.class, key);
+            ranking.sort((u1, u2) -> Integer.compare(u2.getPuntos(), u1.getPuntos()));
+            for (User user : ranking) {
+                user.setEmail(null);
+                user.setPassword(null);
+                user.setDinero(0);
+                user.setActSkinWeapon(null);
+                user.setActSkinUser(null);
+ //               user.setId(null);
+                // Set other fields to null or 0 as needed
+            }
+            logger.info("Ranking obtenido");
+        } catch (Exception e) {
+            logger.error("Error al obtener el ranking");
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return ranking;
     }
 
 

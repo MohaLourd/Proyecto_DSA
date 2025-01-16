@@ -9,7 +9,7 @@ public interface ProductsManager {
     public Products addProduct(String nameProduct, String price);
     public Products addProduct(Products o);
     public int size();
-    public List<Products> getProducts();
+    public List<Products> getProducts(String idUser);
     public Products getProduct(String name);
 
     public Products findProduct(int id);

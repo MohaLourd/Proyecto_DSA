@@ -8,6 +8,7 @@ public interface UserManager {
 
     public User Register(String username, String password, String email);
     public User Register(User u);
+    public User updateUserWithId (User u);
 
     public List<User> findAll();
     public User IniciarSesion(String username, String password);
@@ -16,6 +17,7 @@ public interface UserManager {
     public List<Products> getProductsOfUser(User u);
     public void addProductToUser(User u, Products p);
     public User getUser(String username);
+    public List<User> getRanking();
 
 
 

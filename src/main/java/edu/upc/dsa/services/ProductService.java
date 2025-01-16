@@ -36,10 +36,10 @@ public class ProductService {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful", response = Products.class, responseContainer="List"),
     })
-    @Path("/")
+    @Path("/{idUser}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getObjects() {
-        List<Products> products = this.om.getProducts();
+    public Response getObjects(@PathParam("id") String idUser) {
+        List<Products> products = this.om.getProducts(idUser);
         GenericEntity<List<Products>> entity = new GenericEntity<List<Products>>(products) {};
         return Response.status(201).entity(entity).build()  ;
     }
@@ -51,10 +51,10 @@ public class ProductService {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful", response = Products.class, responseContainer = "List"),
     })
-    @Path("/Android")
+    @Path("/{idUser}/Android")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getObjectsForAndroid() {
-        List<Products> products = this.om.getProducts();
+    public Response getObjectsForAndroid(@PathParam("idUser") String idUser){
+        List<Products> products = this.om.getProducts(idUser);
         GenericEntity<List<Products>> entity = new GenericEntity<List<Products>>(products) {};
         return Response.status(201).entity(entity).build();
     }

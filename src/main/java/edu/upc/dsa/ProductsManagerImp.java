@@ -1,15 +1,17 @@
 package edu.upc.dsa;
 
-import edu.upc.dsa.DB.Session;
+import edu.upc.dsa.DB.*;
 import edu.upc.dsa.models.Products;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import edu.upc.dsa.models.User;
 import org.apache.log4j.Logger;
 
-import edu.upc.dsa.DB.FactorySession;
 import edu.upc.dsa.DB.Session;
+import edu.upc.dsa.models.Products;
 
 public class ProductsManagerImp implements ProductsManager {
     private static ProductsManager instance;
@@ -93,21 +95,41 @@ public class ProductsManagerImp implements ProductsManager {
     }
 
     @Override
-    public List<Products> getProducts() {
+    public List<Products> getProducts(String idUser) { //Devuelve los productos que no tiene el usuario
         List<Products> products = null;
+        List<Products> productsUser = new LinkedList<>();
+        List<Products> productsNotInUser = new LinkedList<>();
         Session session = FactorySession.openSession();
         try {
             HashMap<String, Integer> key = new HashMap<>();
             key.put("1", 1);
             products = session.findAll(Products.class,key );
             logger.info("Productos recibidos:" + products.size());
+            User user= (User) session.get(User.class,"id",idUser);
+            UserDAO userDAO = new UserDAOImpl();
+            productsUser= userDAO.getProductsOfUser(user);
+
+
+            for (Products product : products) {
+                boolean found = false;
+                for (Products userProduct : productsUser) {
+                    if (userProduct.getNameProduct().equals(product.getNameProduct())) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    productsNotInUser.add(product);
+                }
+            }
+
         } catch (Exception e) {
             logger.error("Error al obtener los productos");
             e.printStackTrace();
         } finally {
             session.close();
         }
-        return products;
+        return productsNotInUser;
     }
 
     @Override

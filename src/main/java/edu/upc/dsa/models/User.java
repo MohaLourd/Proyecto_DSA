@@ -12,8 +12,21 @@ public class User {
     String username;
     String password;
     Integer dinero = 20;
-//    Integer product_id=null;
-//List<Products> productos;
+    Integer puntos = 0;
+    String actSkinUser = "default";
+    String actSkinWeapon = "default";
+
+
+    public User(String email, String username, String password, Integer puntos, String actSkinUser, String actSkinWeapon) {
+        this();
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        if (id != null) this.setId(id);
+        this.puntos = puntos;
+        this.actSkinUser = actSkinUser;
+        this.actSkinWeapon = actSkinWeapon;
+    }
 
 
     public User(String email, String username, String password) {
@@ -22,15 +35,16 @@ public class User {
         this.username = username;
         this.password = password;
         if (id != null) this.setId(id);
-        //this.productos = new LinkedList<>();
     }
+
+
     public User() {
         this.setId(RandomUtils.getId());
     }
 
     public String getDatos(){
         return "User [id="+id+", email=" + email + ", username=" + username +
-                ", password="+ password + ", dinero=" + dinero + "]";
+                ", password="+ password + ", dinero=" + dinero +"puntos="+puntos + "actSkinUser="+actSkinUser + "actSkinWeapon="+actSkinWeapon+"]";
     }
 
     public void setId(String id) {
@@ -56,11 +70,6 @@ public class User {
         this.password = password;
     }
 
- //   public List<Products> getProductos(){return productos; }
-//    public void addProducto(Products p){
-//        productos.add(p);
-//        dinero = dinero - p.getPrice();
-//    }
 
     public Integer getDinero(){
         return this.dinero;
@@ -72,8 +81,29 @@ public class User {
         this.dinero = dinero;
     }
 
+    public Integer getPuntos() {
+        return puntos;
+    }
 
-   // public void setProductos(List<Products> productos){this.productos = productos; }
+    public void setPuntos(Integer puntos) {
+        this.puntos = puntos;
+    }
+
+    public void setActSkinUser(String actSkinUser) {
+        this.actSkinUser = actSkinUser;
+    }
+
+    public void setActSkinWeapon(String actSkinWeapon) {
+        this.actSkinWeapon = actSkinWeapon;
+    }
+
+    public String getActSkinUser() {
+        return actSkinUser;
+    }
+
+    public String getActSkinWeapon() {
+        return actSkinWeapon;
+    }
 
     public User setEmail(String email) {
         this.email = email;

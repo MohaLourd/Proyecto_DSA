@@ -169,4 +169,88 @@ public class UserService {
         }
     }
 
+
+
+    @PUT
+    @Path("/{id}/{username}/{email}/{password}/update")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateUser(@PathParam("id") String id,
+                               @PathParam("username") String username,
+                               @PathParam("email") String email,
+                               @PathParam("password") String password) {
+
+        User userViejo = this.um.getUser(id);
+        userViejo.setUsername(username);
+        userViejo.setEmail(email);
+        userViejo.setPassword(password);
+
+        User u = this.um.updateUserWithId(userViejo);
+        if (u != null) {
+            return Response.status(201).entity(u).build();
+        } else {
+            return Response.status(404).entity("User not found").build();
+        }
+
+
+
+
+    }
+
+
+
+
+    @PUT
+    @Path("/update2")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateUser(User user) {
+        User u = this.um.updateUserWithId(user);
+        if (u != null) {
+            return Response.status(201).entity(u).build();
+        } else {
+            return Response.status(404).entity("User not found").build();
+        }
+    }
+
+    @PUT
+    @Path("/{id}/{puntos}/{dinero}/updatePartida")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response updatePoints(@PathParam("id") String id,
+                                 @PathParam("puntos") String puntos,
+                                 @PathParam("dinero") String dinero){
+
+        User u = this.um.getUser(id);
+        int puntosViejos = u.getPuntos();
+        if (puntosViejos <  Integer.parseInt(puntos))
+            u.setPuntos(Integer.parseInt(puntos));
+        Integer dineroViejo = u.getDinero();
+        u.setDinero(Integer.parseInt(dinero)+dineroViejo);
+        this.um.updateUserWithId(u);
+        if (u != null) {
+            return Response.status(201).entity(u.getPuntos()).build();
+        } else {
+            return Response.status(404).entity("User not found").build();
+        }
+    }
+
+
+    @GET
+    @ApiOperation(value = "get ranking", notes = "asdasd")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response = User.class, responseContainer="List"),
+    })
+    @Path("/ranking")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRanking() {
+        List<User> users = this.um.getRanking();
+        GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users) {};
+        return Response.status(201).entity(entity).build();
+    }
+
+
+
+
+
 }
