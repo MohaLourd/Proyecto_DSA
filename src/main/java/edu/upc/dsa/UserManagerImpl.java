@@ -134,7 +134,13 @@ public class UserManagerImpl implements UserManager{
 
         Session session = FactorySession.openSession();
         HashMap<String, String> key = new HashMap<>();
-        key.put("username", user);
+        if (user.contains("@")) {
+            key.put("email", user);
+        }
+        else {
+            key.put("username", user);
+        }
+
         key.put("password", password);
         try {
             User u = (User) session.getGeneralisimo(User.class, key);
