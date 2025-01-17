@@ -204,7 +204,9 @@ public class UserService {
     @Path("/update2")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUser(User user) {
+        public Response updateUser(User user) {
+        user.setDinero(null);
+        user.setPuntos(null);
         User u = this.um.updateUserWithId(user);
         if (u != null) {
             return Response.status(201).entity(u).build();
@@ -247,6 +249,24 @@ public class UserService {
         List<User> users = this.um.getRanking();
         GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users) {};
         return Response.status(201).entity(entity).build();
+    }
+
+    @GET
+    @ApiOperation(value = "get datos perfil", notes = "no envia la contraseña por seguridad")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response = User.class),
+            @ApiResponse(code = 404, message = "User not found")
+    })
+    @Path("/{idUser}/datosPerfil")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDatosPerfil(@PathParam("idUser") String idUser) {
+        User u = this.um.getUser(idUser);
+        if (u == null) {
+            return Response.status(404).build();
+        } else {
+            u.setPassword("");
+            return Response.status(201).entity(u).build();
+        }
     }
 
 
