@@ -249,7 +249,22 @@ public class UserService {
         return Response.status(201).entity(entity).build();
     }
 
-
+    @GET
+    @ApiOperation(value = "Get user profile by ID", notes = "Retrieve user profile details by ID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = User.class),
+            @ApiResponse(code = 404, message = "User not found")
+    })
+    @Path("/{idUser}/datosPerfil")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserProfileById(@PathParam("idUser") String id) {
+        User u = this.um.getUser(id);
+        if (u != null) {
+            return Response.status(200).entity(u).build();
+        } else {
+            return Response.status(404).entity("User not found").build();
+        }
+    }
 
 
 
