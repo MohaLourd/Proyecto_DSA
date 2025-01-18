@@ -12,14 +12,17 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f0f8ff;
+            position: relative;
+            overflow: hidden;
         }
         .container {
             text-align: center;
             border: 1px solid #ccc;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5); /* Updated shadow color */
             background-color: #ffffff;
+            z-index: 1;
         }
         input {
             display: block;
@@ -30,14 +33,14 @@
         }
         button {
             padding: 10px 20px;
-            background-color: #007BFF;
+            background-color: #4caf50; /* Updated button color */
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #388e3c; /* Updated button hover color */
         }
         .message {
             margin-top: 20px;
@@ -48,6 +51,14 @@
             position: absolute;
             top: 10px;
             left: 10px;
+        }
+        .background {
+            position: absolute;
+            inset: 0;
+            z-index: -10;
+            height: 100%;
+            width: 100%;
+            background: radial-gradient(125% 125% at 50% 10%, #fff 40%, #4caf50 100%);
         }
     </style>
 </head>
@@ -65,12 +76,12 @@
     </form>
     <div id="message" class="message"></div>
 </div>
+<div class="background"></div>
 <script>
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
         const formData = new FormData(document.getElementById('loginForm'));
-        const user = formData.get('user');
 
         fetch('http://localhost:8080/dsaApp/users/login', {
             method: 'POST',
@@ -84,18 +95,12 @@
             }
         })
         .then(data => {
-             console.log('Data received:', data);
-            document.getElementById('message').textContent = 'Login successful';
-            console.log('Success:', data);
             localStorage.setItem('username', data.username);
             localStorage.setItem('id', data.id);
-            if (document.getElementById('message').textContent === 'Login successful') {
-                window.location.href = 'Productos.html';
-            }
+            window.location.href = 'home.html';
         })
         .catch((error) => {
             document.getElementById('message').textContent = error.message;
-            console.error('Error:', error);
         });
     });
 </script>

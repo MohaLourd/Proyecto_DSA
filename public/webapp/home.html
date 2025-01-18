@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Proyecto DSA</title>
+    <title>Home</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <style>
         body, html {
@@ -85,17 +85,46 @@
             font-size: 2em;
             margin-bottom: 10px;
         }
-        .description, .additional-text {
+        .description {
             font-size: 1.8em; /* Agrandar un poco más el texto */
         }
         .additional-text {
-            font-size: 1.8em; /* Agrandar un poco más el texto */
+            font-size: 1.5em; /* Reducir un poco el tamaño del texto */
             margin-top: 10px;
         }
         .subtitle .highlight {
             color: #ff0000; /* Rojo fuerte */
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const username = localStorage.getItem('username');
+            const id = localStorage.getItem('id');
+            const buttonsContainer = document.getElementById('buttonsContainer');
+
+            if (username && id) {
+                buttonsContainer.innerHTML = `
+                    <div class="d-flex justify-content-between w-100">
+                        <div>
+                            <button id="logoutButton" class="btn btn-custom">Cerrar Sesión</button>
+                        </div>
+                        <div>
+                            <a href="perfil.html" class="btn btn-custom mr-2">Perfil</a>
+                            <a href="ranking.html" class="btn btn-custom mr-2">Ranking</a>
+                            <a href="Productos.html" class="btn btn-custom">Tienda</a>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('logoutButton').addEventListener('click', function() {
+                    localStorage.clear();
+                    window.location.href = 'index.html';
+                });
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-custom">
@@ -103,17 +132,14 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="#"></a>
         </div>
-        <div class="d-flex justify-content-end">
-            <a href="register.html" class="btn btn-custom mr-2">Register</a>
-            <a href="login.html" class="btn btn-custom">LogIn</a>
-        </div>
+        <div id="buttonsContainer" class="d-flex justify-content-end w-100"></div>
     </div>
 </nav>
 <div class="central-content">
     <div class="main-title">SURVIVAL COINS</div>
     <div class="subtitle">Los muertos acechan, las monedas te esperan. <span class="highlight">¿</span><span>Hasta cuándo sobrevivirás</span><span class="highlight">?</span></div>
     <div class="description">No tendrás otra salida, equilibra el riesgo de la muerte y la recompensa en monedas.</div>
-    <div class="additional-text">Regístrate y forma parte de SURVIVAL COINS, inicia sesión y disfruta.</div>
+    <div class="additional-text">Disfruta, sube al ranking, personaliza tu perfil y compra lo que necesites para sobrevivir.</div>
 </div>
 <div class="footer-custom" id="footer">
     <div class="footer-text">

@@ -36,9 +36,9 @@ public class ProductService {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successful", response = Products.class, responseContainer="List"),
     })
-    @Path("/{idUser}")
+    @Path("/{idUser}/web")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getObjects(@PathParam("id") String idUser) {
+    public Response getObjects(@PathParam("idUser") String idUser) {
         List<Products> products = this.om.getProducts(idUser);
         GenericEntity<List<Products>> entity = new GenericEntity<List<Products>>(products) {};
         return Response.status(201).entity(entity).build()  ;

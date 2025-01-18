@@ -8,6 +8,8 @@ import edu.upc.dsa.models.Products;
 import edu.upc.dsa.models.Relacion;
 import edu.upc.dsa.models.User;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -86,7 +88,22 @@ public class UserManagerImpl implements UserManager{
     public User updateUserWithId (User u) {
         Session session = FactorySession.openSession();
         try {
-            session.update(u);
+            HashMap <String, String> key = new HashMap<>();
+            key.put("id", u.getId());
+            User userAntiguo = (User) session.getGeneralisimo(User.class, key);
+            for (String field : new String[]{"Username", "Email", "Password", "ActSkinUser", "ActSkinWeapon", "Dinero", "Puntos"}) {
+                try {
+                    Method getter = User.class.getMethod("get" + field);
+                    Method setter = User.class.getMethod("set" + field, getter.getReturnType());
+                    Object value = getter.invoke(u);
+                    if (value != null) {
+                        setter.invoke(userAntiguo, value);
+                    }
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    logger.error("Error updating field " + field + " for user " + u.getId(), e);
+                }
+            }
+            session.update(userAntiguo);
             logger.info("User updated: " + u.getDatos());
         } catch (Exception e) {
             logger.error("Error al actualizar el usuario " + u.getDatos());
