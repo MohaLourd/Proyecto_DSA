@@ -26,7 +26,7 @@ public class Main {
         // create a resource config that scans for JAX-RS resources and providers
         // in edu.upc.dsa package
         final ResourceConfig rc = new ResourceConfig().packages("edu.upc.dsa.services");
-        rc.register(CORSFilter.class);
+
         rc.register(io.swagger.jaxrs.listing.ApiListingResource.class);
         rc.register(io.swagger.jaxrs.listing.SwaggerSerializers.class);
 

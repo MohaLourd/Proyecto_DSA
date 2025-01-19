@@ -266,6 +266,23 @@ public class UserService {
         }
     }
 
+    @GET
+    @ApiOperation(value = "Get user by ID", notes = "Retrieve user details by ID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful", response = User.class),
+            @ApiResponse(code = 404, message = "User not found")
+    })
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserById(@PathParam("id") String id) {
+        User u = this.um.getUser(id);
+        if (u != null) {
+            return Response.status(200).entity(u).build();
+        } else {
+            return Response.status(404).entity("User not found").build();
+        }
+    }
+
 
 
 }
