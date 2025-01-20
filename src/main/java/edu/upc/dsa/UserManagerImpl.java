@@ -88,6 +88,12 @@ public class UserManagerImpl implements UserManager{
     public User updateUserWithId (User u) {
         Session session = FactorySession.openSession();
         try {
+            if (u.getDinero() == 20 || u.getPuntos() == 0)
+            {
+                u.setDinero(null);
+                u.setPuntos(null);
+            }
+
             HashMap <String, String> key = new HashMap<>();
             key.put("id", u.getId());
             User userAntiguo = (User) session.getGeneralisimo(User.class, key);
